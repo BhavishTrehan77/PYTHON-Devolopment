@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.schemas.products_schema import ProductCreate, ProductUpdate
+from app.schemas.products_schema import ProductCreate, ProductUpdate,ProductResponse
 
 from app.controllers.product_controller import(
     create_product_controller,
@@ -13,20 +13,20 @@ from app.controllers.product_controller import(
 router=APIRouter()
 
 
-@router.post("/create")
+@router.post("/create",response_model=ProductResponse,status_code=201)
 def create_product(product:ProductCreate):
     return create_product_controller(product.model_dump())
 
-@router.get("/")
+@router.get("/",response_model=list[ProductResponse])
 def get_products():
     return get_products_controller()
 
-@router.get("/{product_id}")
+@router.get("/{product_id}",response_model=ProductResponse)
 
 def get_product(product_id: str):
     return get_product_by_id_controller(product_id)
 
-@router.delete("/{product_id}")
+@router.delete("/{product_id}",response_model=ProductResponse)
 def delete_product(product_id: str):
     return delete_product_controller(product_id)
 

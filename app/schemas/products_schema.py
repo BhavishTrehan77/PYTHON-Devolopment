@@ -14,3 +14,10 @@ class ProductUpdate(BaseModel):
     price: Optional[float] = Field(default=None, ge=0)
     quantity: Optional[int] = Field(default=None, ge=1)
     description: Optional[str] = None
+
+class ProductResponse(BaseModel):
+    id:str
+    name:str
+    price: int
+    quantity: int
+    description: int

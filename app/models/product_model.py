@@ -14,8 +14,13 @@ def get_products():
 
 def get_products_by_id(product_id):
     product= products_collection.find_one({"_id":  ObjectId(product_id)})
-    if product:
-        product["_id"]=str(product["_id"])
+    if not product:
+        raise HTTPException(
+            status_code=404,
+            detail="Product not found"
+        )
+
+    product["_id"]=str(product["_id"])
     return product
 
 
