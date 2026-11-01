@@ -1,4 +1,4 @@
-from fastapi import APIRouter,Query,Depends,Request
+from fastapi import APIRouter,Query,Depends,Request,UploadFile,File
 from app.schemas.products_schema import ProductCreate, ProductUpdate,ProductResponse
 from app.middleware.auth_middleware import auth_middleware
 from app.controllers.product_controller import(
@@ -9,6 +9,8 @@ from app.controllers.product_controller import(
     update_products_controller
 
 )
+import os
+
 
 router=APIRouter()
 
@@ -34,3 +36,17 @@ def delete_product(product_id: str):
 
 def update_product(product_id: str,product:ProductUpdate):
     return update_products_controller(product_id,product.model_dump(exclude_unset=True))
+@router.post("/upload")
+async def upload_file(file:UploadFile=File(...)):
+    os.makedirs("uploads",exist_ok=True)
+    file_path=f"uploads/{file.filename}"
+    contents=await file.read()
+    with open(file_path,"wb") as f:
+        f.write(contents)
+    return{
+        "message": "File uploaded successfully",
+        "filename":file.filename,
+        "content_type":file.content_type,
+        "size":len(contents)
+    } 
+
