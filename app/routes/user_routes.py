@@ -18,12 +18,13 @@ def create_router(user:SignupSchema):
 @router.post("/login")
 
 def login_router(user:LoginSchema):
-    exisitng_user=login_user_controller(user.email,user.password)
+    existing_user=login_user_controller(user.email,user.password)
     if not existing_user:
         raise HTTPException( status_code=401,
             detail="Invalid email or password")
     return{
-        "message":"user found"
+        "message":"user found",
+        "token":existing_user
     }
 
 

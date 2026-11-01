@@ -1,6 +1,6 @@
-from fastapi import APIRouter,Query
+from fastapi import APIRouter,Query,Depends,Request
 from app.schemas.products_schema import ProductCreate, ProductUpdate,ProductResponse
-
+from app.middleware.auth_middleware import auth_middleware
 from app.controllers.product_controller import(
     create_product_controller,
     get_products_controller,
@@ -17,8 +17,8 @@ router=APIRouter()
 def create_product(product:ProductCreate):
     return create_product_controller(product.model_dump())
 
-@router.get("/",response_model=list[ProductResponse])
-def get_products(limit: int=Query(default=10,ge=1,le=100)):
+@router.get("/")
+def get_products(request:Request,limit: int=Query(default=10,ge=1,le=100),user=Depends(auth_middleware)):
     return get_products_controller(limit)
 
 @router.get("/{product_id}",response_model=ProductResponse)
