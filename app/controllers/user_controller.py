@@ -14,7 +14,8 @@ def login_user_controller(email,password):
         return None
     payload={
         "user_id":str(user["_id"]),
-        "email":user["email"]
+        "email":user["email"],
+        "role":user["role"]
     }
     token=jwt.encode(payload,SECRET_KEY,algorithm=ALGORITHM)
     return token
