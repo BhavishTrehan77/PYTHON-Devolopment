@@ -5,8 +5,8 @@ def create_product(product_data):
     result=products_collection.insert_one(product_data)
     return str(result.inserted_id)
 
-def get_products():
-    products = list(products_collection.find())
+def get_products(limit):
+    products = list(products_collection.find().limit(limit))
     for product in products:
         product["_id"] = str(product["_id"])
     return products

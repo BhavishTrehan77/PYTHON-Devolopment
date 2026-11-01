@@ -20,4 +20,4 @@ class ProductResponse(BaseModel):
     name:str
     price: int
     quantity: int
-    description: int
+    description: str

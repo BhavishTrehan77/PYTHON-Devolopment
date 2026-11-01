@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter,Query
 from app.schemas.products_schema import ProductCreate, ProductUpdate,ProductResponse
 
 from app.controllers.product_controller import(
@@ -18,8 +18,8 @@ def create_product(product:ProductCreate):
     return create_product_controller(product.model_dump())
 
 @router.get("/",response_model=list[ProductResponse])
-def get_products():
-    return get_products_controller()
+def get_products(limit: int=Query(default=10,ge=1,le=100)):
+    return get_products_controller(limit)
 
 @router.get("/{product_id}",response_model=ProductResponse)
 

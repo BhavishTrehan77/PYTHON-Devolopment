@@ -9,8 +9,8 @@ from app.services.product_service import (
 def create_product_controller(product_data):
     return create_product_service(product_data)
 
-def get_products_controller():
-    return get_products_service()
+def get_products_controller(limit):
+    return get_products_service(limit)
 
 
 def get_product_by_id_controller(product_id):
