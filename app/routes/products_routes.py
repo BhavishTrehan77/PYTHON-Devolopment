@@ -9,6 +9,10 @@ from app.controllers.product_controller import(
     update_products_controller
 
 )
+from app.controllers.pdf_controller import save_pdf_controller,process_pdf_controller
+from pypdf import PdfReader
+
+
 import os
 
 
@@ -43,10 +47,20 @@ async def upload_file(file:UploadFile=File(...)):
     contents=await file.read()
     with open(file_path,"wb") as f:
         f.write(contents)
+    reader=PdfReader(file_path)
+    text=""
+    for page in reader.pages:
+        text+=page.extract_text() or ""
+    
+    result=process_pdf_controller(text,file.filename)
+
+    
     return{
         "message": "File uploaded successfully",
         "filename":file.filename,
         "content_type":file.content_type,
-        "size":len(contents)
+        "size":len(contents),
+        "text":text,
+        "database":result
     } 
 

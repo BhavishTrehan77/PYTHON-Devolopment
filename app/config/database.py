@@ -16,6 +16,7 @@ db=client["python_backend"]
 products_collection=db["products"]
 # this is basicallt our collection name
 users_collection = db["users"]
+pdf_collection=db["pdf"]
 
 try:
     client.admin.command("ping")
